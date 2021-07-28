@@ -192,7 +192,8 @@ export default class App extends Vue {
     width: 90%;
     margin: 0 auto;
     height: 80px;
-    font-size: 0.8rem;
+    text-align: start;
+    font-size: 1rem;
     background-color: white;
   }
   &__button {
@@ -215,6 +216,7 @@ export default class App extends Vue {
     text-align: start;
     margin: 0 auto;
     padding: 2%;
+    text-align: start;
     word-break: break-all;
   }
 }

@@ -73,14 +73,18 @@ export default class App extends Vue {
       return;
     }
     this.angou = "";
-    [...Array(this.message.length)].map((_, i) => {
+    for (let i = 0; i < this.message.length; i++) {
+      if (this.message.charCodeAt(i) >= this.key[1]) {
+        alert("もっと大きい素数で鍵を生成してください");
+        return;
+      }
       this.angou += String.fromCharCode(
         Number(
           this.bigintExpo(this.message.charCodeAt(i), this.key[0]) %
             BigInt(this.key[1])
         ) + 33
       );
-    });
+    }
   }
 }
 </script>
