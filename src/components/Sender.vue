@@ -37,10 +37,15 @@ export default class App extends Vue {
 
   @Emit("message_update")
   sendMessage(): string {
+    if (this.angou == "") alert("暗号文がありません");
     return this.angou;
   }
 
   private getKey(): void {
+    if (this.publick_key.length == 0) {
+      alert("公開鍵が作成されていません");
+      return;
+    }
     this.key = this.publick_key;
   }
 
@@ -59,6 +64,14 @@ export default class App extends Vue {
   }
 
   private conversion(): void {
+    if (this.message == "") {
+      alert("メッセージを作成してください");
+      return;
+    }
+    if (this.key.length == 0) {
+      alert("公開鍵を取得してください");
+      return;
+    }
     this.angou = "";
     [...Array(this.message.length)].map((_, i) => {
       this.angou += String.fromCharCode(
@@ -66,14 +79,6 @@ export default class App extends Vue {
           this.bigintExpo(this.message.charCodeAt(i), this.key[0]) %
             BigInt(this.key[1])
         ) + 33
-      );
-      console.log("angou ka" + i);
-      // console.log(this.message.charCodeAt(i));
-      console.log(
-        Number(
-          this.bigintExpo(this.message.charCodeAt(i), this.key[0]) %
-            BigInt(this.key[1])
-        )
       );
     });
   }

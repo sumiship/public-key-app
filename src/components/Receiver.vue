@@ -61,6 +61,15 @@ export default class App extends Vue {
     return retNum;
   }
 
+  //素数チェック
+  private isPrime(num: number): boolean {
+    if (num <= 1) return false;
+    for (let i = 2; i <= Math.floor(Math.sqrt(num)); i++) {
+      if (num % i == 0) return false;
+    }
+    return true;
+  }
+
   //retNum * num1 % num2 = 1
   private remainder_one(num1: number, num2: number): number {
     let retNum = 0;
@@ -80,32 +89,31 @@ export default class App extends Vue {
   }
 
   private key_generate() {
+    if (
+      this.prime1 == this.prime2 ||
+      !this.isPrime(Number(this.prime1)) ||
+      !this.isPrime(Number(this.prime2))
+    ) {
+      alert("2種類の素数を入力してください");
+      this.prime1 = this.prime2 = "";
+      this.secret_key = this.public_key = [];
+      return;
+    }
     const p = Number(this.prime1);
     const q = Number(this.prime2);
     const n: number = p * q;
     const f: number = (p - 1) * (q - 1);
-    // const f: number = ((p - 1) * (q - 1)) / this.eugrid(p - 1, q - 1);
     const k1 = this.coprime(f);
     const k2 = this.remainder_one(k1, f);
     this.public_key = [k1, n];
     this.secret_key = [k2, n];
-    const data = 16;
-    const angou = Number(this.bigintExpo(data, k1) % BigInt(n));
-    const hira = this.bigintExpo(angou, k2) % BigInt(n);
-    // const angou = data ** k1 % n;
-    // const angou1 = BigInt(data);
-    // const angou2 = BigInt(k1);
-    // const aaaaa = angou1 * angou2;
-    // console.log(4n * 5n);
-    // console.log(this.bigintExpo(4, 5));
-    // const hira = angou ** k2 % n;
-    // console.log(k1, k2);
-    // console.log("data: " + data);
-    // console.log("angou: " + angou);
-    // console.log("hira: " + hira);
   }
 
   private conversion(): void {
+    if (this.angou == "") {
+      alert("メッセージを受信してください");
+      return;
+    }
     this.message = "";
     [...Array(this.angou.length)].map((_, i) => {
       this.message += String.fromCharCode(
@@ -114,16 +122,7 @@ export default class App extends Vue {
             BigInt(this.secret_key[1])
         )
       );
-      console.log("hirabunnka" + i);
-      console.log(this.angou.charCodeAt(i));
-      console.log(
-        Number(
-          this.bigintExpo(this.angou.charCodeAt(i), this.secret_key[0]) %
-            BigInt(this.secret_key[1])
-        )
-      );
     });
-    // console.log(this.angou);
   }
 }
 </script>
@@ -159,7 +158,8 @@ export default class App extends Vue {
   }
   &__button {
     font-size: 2rem;
-    background-color: rgb(216, 172, 203);
+    background-color: red;
+    // background-color: rgb(216, 172, 203);
     width: 10%;
     margin: 0 auto;
     padding-bottom: 5px;
@@ -193,6 +193,7 @@ export default class App extends Vue {
     margin: 0 auto;
     height: 80px;
     font-size: 0.8rem;
+    background-color: white;
   }
   &__button {
     font-size: 2rem;
