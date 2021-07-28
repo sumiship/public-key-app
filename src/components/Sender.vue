@@ -76,6 +76,7 @@ export default class App extends Vue {
     for (let i = 0; i < this.message.length; i++) {
       if (this.message.charCodeAt(i) >= this.key[1]) {
         alert("もっと大きい素数で鍵を生成してください");
+        this.angou = "";
         return;
       }
       this.angou += String.fromCharCode(
